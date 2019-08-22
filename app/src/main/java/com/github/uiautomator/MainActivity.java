@@ -8,6 +8,7 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.content.IntentFilter;
 import android.content.ServiceConnection;
 import android.graphics.Color;
 import android.graphics.PixelFormat;
@@ -108,6 +109,13 @@ public class MainActivity extends Activity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
+        IntentFilter filter = new IntentFilter();
+        filter.addAction(Intent.ACTION_SCREEN_ON);
+        filter.addAction(Intent.ACTION_SCREEN_OFF);
+        filter.addAction(Intent.ACTION_USER_PRESENT);
+        ScreenBroadcastReceiver mScreenReceiver = new ScreenBroadcastReceiver();
+        registerReceiver(mScreenReceiver, filter);
 
         Intent serviceIntent = new Intent(this, Service.class);
         bindService(serviceIntent, connection, BIND_IMPORTANT | BIND_AUTO_CREATE);
